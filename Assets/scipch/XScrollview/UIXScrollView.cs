@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -75,7 +76,7 @@ namespace XScrollView
             var contentSize = new Vector2(contentWidth, contentHeight);
             contentRect.sizeDelta = contentSize;
             //开始创建节点
-            StartCoroutine(CreateCell());
+            CreateCell();
             //滚动事件
             scrollRect.onValueChanged.AddListener(ScrollViewOnValueChanged);
         }
@@ -97,13 +98,13 @@ namespace XScrollView
         {
             clickItemAction += clickAction;
         }
-        IEnumerator CreateCell()
+        public async void CreateCell()
         {
             var showCell = Mathf.Min(maxShowCellNum, totalNum);
             showCellItems = new List<BaseXScrollViewItem>(showCell);
             for (int i = 0; i < showCell; i++)
             {
-                yield return null;
+                await UniTask.Yield();;
 
                 var index = i;
 
